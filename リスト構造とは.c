@@ -27,6 +27,9 @@ int main()
 
     printf("%s", one->next->title);
 
+    free(one);
+    free(two);
+
     return 0;
 }
 
