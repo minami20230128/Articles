@@ -17,6 +17,11 @@ int radd(int&& a, int&& b)//右辺値しか渡せない関数
     return (a+b);
 }
 
+int ladd (int& a, int& b)
+{
+    return (a + b);
+}
+
 int main()
 {
     int a = 1;
@@ -26,14 +31,18 @@ int main()
     auto result = add(a, b);
     std::cout << result << std::endl;
 
-    //直接右辺値を渡せばコピーが発生しない
+    //左辺値参照するとコピーが発生しない
+    result = ladd(a, b);
+    std::cout << result << std::endl;
+
+    //また、右辺値参照をしてもコピーが発生しない
     result = radd(1, 2);
     std::cout << result << std::endl;
 
     //これは右辺値ではないのでエラーになる
     //result = radd(a, b);
 
-    //左辺値を右辺値にキャストするとエラーが起きない
+    //左辺値を右辺値にキャストすると渡すことができる
     result = radd(std::move(a), std::move(b));
     std::cout << result << std::endl;
 
