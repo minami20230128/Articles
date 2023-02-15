@@ -35,7 +35,7 @@ int main()
     result = ladd(a, b);
     std::cout << result << std::endl;
 
-    //また、右辺値参照をしてもコピーが発生しない
+    //同様に、右辺値参照すると右辺値のコピーを発生させず渡すことができる
     result = radd(1, 2);
     std::cout << result << std::endl;
 
@@ -50,29 +50,24 @@ int main()
 }
 
 //ただし、右辺値参照したあとの変数の利用は保証されない（要追加調査）
+//また非同期処理を行うときなどにあぶない（要追加調査）
 //このようなデメリットを鑑みて、JavaのString型などは変更不能(immutable)になっている
 
-// class Main
+// class Main 
 // {
 //     public static void main(String[] args)
 //     {
-//          String a = "あいうえお";
-//          String b = a;
-//          a = "かきくけこ";
-//          
-//          if(a == b)//参照値が同じならtrue
-//          {
-//              System.out.println("同じ");
-//          }
-//          else
-//          {
-//              System.out.println("違う");
-//          }
-//     }
+//         String a = "あいうえお";
+//         String b = a;
+//         a = "かきくけこ";//代入すると違うオブジェクトになる
+
+//         System.out.println(String.valueOf((a == b)));//オブジェクトが同じならtrue
+//     }   
 // }
 
-//出力結果：違う
-//そのため、こうした変数の再代入を繰り返すとメモリを圧迫する
+
+//出力結果：false
+//これであれば右辺値参照のデメリットは克服されているものの、再代入を繰り返すとメモリを圧迫するデメリットがある
 
 
 
