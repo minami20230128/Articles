@@ -1,0 +1,31 @@
+・C++ 外部ライブラリのリンク方法
+インクルードディレクトリ(/usr/local/include) .hファイルを置く
+ライブラリディレクトリ(/usr/local/lib) .lib(macでは.a)ファイルを置く
+/usr/local/bin .dllファイル(macでは.dylib)を置く
+
+外部ライブラリを使ったプロジェクトをビルドするには、gccコマンドだと
+
+g++ main.cpp -I インクルードディレクトリ -L ライブラリディレクトリ -I ライブラリ
+
+と書く。
+
+しかし、ライブラリを全部列挙しなければならず非常に長くなる。
+
+そこで、
+
+・CMakeList.txtに次のように書く
+cmake_minimum_required(VERSION 3.5.1) # cmakeの最小のバージョンを決めて 
+project(TestAutomation) # プロジェクト名を決める。 
+set(CMAKE_CXX_STANDARD 17) # C++17を指定
+find_package(OpenXLSX REQUIRED) #OpenXLSXライブラリを探す 
+include_directories(${OpenXLSX_INCLUDE_DIRS}) #インクルードディレクトリ指定 
+add_executable(Main main.cpp excel.hpp) #吐き出す実行ファイルと使うソースコードの指定 
+target_link_libraries(Main ${OpenXLSX_LIBRARIES}) #ライブラリとリンク
+
+・そしてビルド
+$ls 
+main.cpp CMakeLists.txt //同じディレクトリになるようにする
+~$mkdir build 
+~$cd build 
+~/build$cmake ../ 
+~/build$make
