@@ -1,31 +1,54 @@
 ・C++ 外部ライブラリのリンク方法
 インクルードディレクトリ(/usr/local/include) .hファイルを置く
 ライブラリディレクトリ(/usr/local/lib) .lib(macでは.a)ファイルを置く
-/usr/local/bin .dllファイル(macでは.dylib)を置く
+動的ライブラリディレクトリ(/usr/local/bin) .dllファイル(macでは.dylib)を置く
 
-外部ライブラリを使ったプロジェクトをビルドするには、gccコマンドだと
-
+外部ライブラリを使ったプロジェクトをビルドするには、
+gccコマンドだと
 g++ main.cpp -I インクルードディレクトリ -L ライブラリディレクトリ -I ライブラリ
-
 と書く。
 
 しかし、ライブラリを全部列挙しなければならず非常に長くなる。
-
 そこで、
-
 ・CMakeList.txtに次のように書く
-cmake_minimum_required(VERSION 3.5.1) # cmakeの最小のバージョンを決めて 
-project(TestAutomation) # プロジェクト名を決める。 
-set(CMAKE_CXX_STANDARD 17) # C++17を指定
-find_package(OpenXLSX REQUIRED) #OpenXLSXライブラリを探す 
-include_directories(${OpenXLSX_INCLUDE_DIRS}) #インクルードディレクトリ指定 
-add_executable(Main main.cpp excel.hpp) #吐き出す実行ファイルと使うソースコードの指定 
-target_link_libraries(Main ${OpenXLSX_LIBRARIES}) #ライブラリとリンク
+cmake_minimum_required(VERSION 3.5.1) #cmakeの最小バージョンを決める
+project(main)　＃プロジェクト名
+add_executable(main main.cpp excel.hpp) #ターゲットを決める
+set(CMAKE_CXX_STANDARD 17) #コンパイル時のc++のバージョンを決める
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #c++17以上でコンパイルできないときはエラーになる
+set(CMAKE_CXX_EXTENSIONS OFF) #コンパイラの余計なオプションを切る
+find_package(OpenXLSX REQUIRED) #OpenXLSXというライブラリを探す(詳細は下記)
+target_include_directories(main PUBLIC ${OpenXLSX_INCLUDE_DIR}) #インクルードディレクトリ(上記)にあるヘッダファイルをインクルード
+link_directories(${OpenXLSX_LIBRARY_DIR}) #ライブラリディレクトリ(上記)にある静的ライブラリをインクルード
+target_link_libraries(main PUBLIC ${OpenXLSX_LIBRARY_DIR})　#動的ライブラリディレクトリ(上記)にある動的ライブラリをインクルード
+target_compile_features(main PRIVATE cxx_std_17) #c++のバージョンを決める(17行目にもあるが、c++11以降を利用するときは改めて決める必要がある)
+message(STATUS "INCLUDE_DIR="${OpenXLSX_INCLUDE_DIR}) #ライブラリのディレクトリを出力し、見つけられているか確認
+message(STATUS "LIBRARY_DIR="${OpenXLSX_LIBRARY_DIR})
+message(STATUS "LIBS="${OpenXLSX_LIBS})
 
 ・そしてビルド
-$ls 
-main.cpp CMakeLists.txt //同じディレクトリになるようにする
-~$mkdir build 
+(CMakeLists.txtのあるディレクトリに移動)
+~$mkdir build #buildというディレクトリを作る
 ~$cd build 
-~/build$cmake ../ 
-~/build$make
+~/build$cmake ../ #ビルド
+~/build$make #コンパイル・実行
+
+
+
+
+
+
+・find_packageができないとき
+(ビルドが済んでいる前提で)
+1. ライブラリ内の「MakeFile」があるディレクトリに移動
+2. sudo make --install で上記のファイルがセットされる
+
+*仕組み
+find_pakcageには2つのモードがある
+1.Moduleモード
+「/usr/local/lib/cmake/パッケージ名」のディレクトリ内にある Find(パッケージ名).cmake というファイルを検索
+2.Configモード
+「/usr/local/lib/cmake/パッケージ名」のディレクトリ内にある (パッケージ名)Config.cmake というファイルを検索
+いずれかのファイルがないとfind_packageコマンドは失敗する
+
+
