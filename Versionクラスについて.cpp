@@ -11,6 +11,7 @@
 #include <string>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main();
 
@@ -26,25 +27,41 @@ class Version
     {
         int firstperiod = ver.find(".");
         int secondperiod = ver.rfind(".");
-        major = ver.substr(0, firstperiod);
-        minor = ver.substr(firstperiod + 1, secondperiod - firstperiod);
-        revision = ver.substr(secondperiod);
+        major = atoi(ver.substr(0, firstperiod).c_str());
+        minor = atoi(ver.substr(firstperiod + 1, secondperiod - firstperiod + 1).c_str());
+        revision = atoi(ver.substr(secondperiod + 1).c_str());
+
+        //1.50.00
+
     }
 
     int compare(Version ver)
     {
-        int result = 0;
-        if((result = strcmp(this->major.c_str(), ver.major.c_str())) != 0)
+        int majorsub = this->major > ver.major;
+        int minorsub = this->minor > ver.minor;
+        int revisionsub = this->revision > ver.revision;
+        
+        if(majorsub == 0 && minorsub == 0 && revisionsub == 0)
         {
-            return result;
+            return 0;
         }
 
-        if((result = strcmp(this->minor.c_str(), ver.minor.c_str())) != 0)
+        if(majorsub > 0)
         {
-            return result;
+            return 1;
         }
 
-        return strcmp(this->revision.c_str(), ver.revision.c_str());
+        if(minorsub > 0)
+        {
+            return 1;
+        }
+
+        if(revisionsub > 0)
+        {
+            return 1;
+        }
+
+        return -1;
     }
 };
 
@@ -59,4 +76,5 @@ int main()
     printf("%d", ver1.compare(ver2));
 }
 
-
+//出力　-4、1
+//辞書順比較だと5.5.0のほうが大きく、versionクラスだと10.0.0のほうが大きい
