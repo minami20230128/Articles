@@ -30,9 +30,6 @@ class Version
         major = atoi(ver.substr(0, firstperiod).c_str());
         minor = atoi(ver.substr(firstperiod + 1, secondperiod - firstperiod + 1).c_str());
         revision = atoi(ver.substr(secondperiod + 1).c_str());
-
-        //1.50.00
-
     }
 
     int compare(Version ver)
@@ -76,5 +73,4 @@ int main()
     printf("%d", ver1.compare(ver2));
 }
 
-//出力　-4、1
-//辞書順比較だと5.5.0のほうが大きく、versionクラスだと10.0.0のほうが大きい
+//出力結果　-4、1
