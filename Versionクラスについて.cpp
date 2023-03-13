@@ -37,9 +37,9 @@ class Version
 
     int compare(Version ver)
     {
-        int majorsub = this->major > ver.major;
-        int minorsub = this->minor > ver.minor;
-        int revisionsub = this->revision > ver.revision;
+        int majorsub = this->major - ver.major;
+        int minorsub = this->minor - ver.minor;
+        int revisionsub = this->revision - ver.revision;
         
         if(majorsub == 0 && minorsub == 0 && revisionsub == 0)
         {
