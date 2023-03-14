@@ -1,0 +1,12 @@
+・WiX(Windows Installer XML)関連まとめ
+
+・用語
+msiファイル
+...DLL、exe、リソースファイルなどが内包されたファイル
+インストーラがその内容を読み込んで起動できる状態にする
+
+WiX Toolset
+...XMLからmsiファイルを作るツール
+
+WixEdit
+...UIからXMLを編集する
