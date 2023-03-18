@@ -3,11 +3,12 @@
 
 #include <exception>
 #include <string>
+#include <iostream>
 
 class myException : std::exception
 {
     public:
-        myException(const string &msg)
+        myException(const std::string &msg)
         {
             this->message = msg;
         }
