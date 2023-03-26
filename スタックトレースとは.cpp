@@ -76,9 +76,15 @@ int main()
 
     for(int i = 0; i < trace.symbols.size(); i++)
     {
-        //std::cout << trace.traces[i] << std::endl;
         std::cout << trace.symbols[i] << std::endl;
     }
 
     return 0;
 }
+
+//出力結果：
+// 0   main                                0x000000010d1e9d85 _ZN11StackTracer13GetStackTraceEv + 101
+// 1   main                                0x000000010d1ea238 main + 24
+// 2   dyld                                0x000000010dd2b52e start + 462
+
+//dyldとは、ダイナミックライブラリを呼び出すためのmacのプログラム
