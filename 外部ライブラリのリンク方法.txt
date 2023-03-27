@@ -34,10 +34,6 @@ message(STATUS "LIBS="${OpenXLSX_LIBS})
 ~/build$make #コンパイル・実行
 
 
-
-
-
-
 ・find_packageができないとき
 (ビルドが済んでいる前提で)
 1. ライブラリ内の「MakeFile」があるディレクトリに移動
@@ -52,3 +48,13 @@ find_pakcageには2つのモードがある
 いずれかのファイルがないとfind_packageコマンドは失敗する
 
 
+・PUBLIC・PRIVATE・INTERFACEの区別
+PRIVATE ターゲットをビルド時だけ参照 利用するときは参照しない
+INTERFACE ターゲットには使わせず、ターゲットに依存するターゲットにだけ利用させる(ヘッダファイルだけのライブラリとか)
+PUBLIC ターゲットにも、利用するターゲットにも使用させる
+
+＊ターゲット=add_executableの最初の変数 上の例で言えばmain
+
+・〇〇＿LIBRARIESが見つからないとき
+LIBRARY_DIRの下にある〇〇.aなどのファイル名をベタ書きする
+上の例なら/usr/local/lib/libOpenXLSX.a
