@@ -1,0 +1,36 @@
+・「C++による開発で陥りやすい問題点の検証」サマリー
+
+配列に関する問題
+#include <stdio.h>
+
+void reverseHello(const char src[], char dst[])
+{
+  int i, j;
+
+  for (i = 0, j = 0; i < 5; i++, j--){
+    i[dst] = src[j];  /* A */
+  }
+}
+
+int main(void)
+{
+  char hello[] = "Hello";
+  char buf[6] = {'\0','\0','\0','\0','\0','\0'};
+  reverseHello(&hello[4], buf);
+
+  printf("%s\n", buf);
+
+  return 0;
+}
+
+実行結果
+olleH
+
+1. コメントAにおけるi[dst]という書き方が、なぜ成立するのか
+通常はdst[i]と書くことが多いが、演算子なので逆でもよいから
+2. コメントAにおけるsrc[j]はjが負となるが、なぜ不正アクセスにならないのか
+19行目の引数にhelloの最後の要素のアドレスを渡しているから
+3. reverseHello関数の引数src、dstは配列か
+c++において配列を引数にすることはできない
+srcはhelloの5文字目のポインタ、dstはbufの最初の文字のポインタを渡している
+
