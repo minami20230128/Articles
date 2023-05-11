@@ -34,3 +34,70 @@ olleH
 c++において配列を引数にすることはできない
 srcはhelloの5文字目のポインタ、dstはbufの最初の文字のポインタを渡している
 
+参照に関する罠
+引数を参照型にすることで、オブジェクトのコピーに伴うオーバーヘッドを解消できる
+
+一時オブジェクトに関する知識不足
+
+#include <stdio.h>
+int& getParm()
+{
+  int parm = 0;
+  return parm;
+}
+
+int main(void)
+{
+  int &p = getParm();
+  printf("parm = %d\n",p);  // A
+}
+
+このコードは関数getParm内で破棄された変数parmを参照しようとしているため、不正アクセスとなる
+
+ところが、
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+const string getABC()
+{
+  return "ABC";
+}
+
+int main(void)
+{
+  const string& abc = getABC();
+  cout << abc << '\n';
+}
+
+この例ではstringクラスのコンストラクタに文字列リテラルを受け取ることが可能なため、一時オブジェクトが作成され、
+そのオブジェクトへの参照がabcに格納される
+
+#include <stdio>
+
+enum{
+  CAT;
+  DOG;
+};
+
+CString getKind(int number)
+{
+  if (number == CAT){
+    return "cat";
+  } else {
+    return "dog";
+  }
+}
+
+int main(void)
+{
+  printf("%s\n", (const char *)getKind(CAT));  /* A */
+  const TCHAR *temp = getKind(DOG);
+  printf("%s\n", temp);                        /* B */
+}
+
+この例では、Aは一時オブジェクトが寿命を保っているので表示できるが、
+Bはtempに格納した時点(97行目)で一時オブジェクトの寿命が尽きるので表示できない
+
