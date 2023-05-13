@@ -101,3 +101,39 @@ int main(void)
 この例では、Aは一時オブジェクトが寿命を保っているので表示できるが、
 Bはtempに格納した時点(97行目)で一時オブジェクトの寿命が尽きるので表示できない
 
+
+オーバーロード・オーバーライドに関する注意点
+
+class Parm
+{
+public:
+    virtual void parm(int);     // A
+    virtual void parm(double);  // B
+};
+
+class SubParm : public Parm
+{
+public:
+    void parm(int);             // C
+};
+
+////
+//// 各メンバ関数の実装は省略
+////
+
+int main(void)
+{
+    SubParm *sub = new SubParm;
+    Parm *sp = sub;
+
+    sp->parm(2.3);   // D
+    sub->parm(2.3);  // E
+}
+
+オーバーロード...引数の型が異なる関数を複数定義すること
+オーバーライド...派生クラスで、基底クラスで定義されているのと同じ関数名・引数・戻り地の関数を作り置き換えること
+
+Aではint型、Bではdouble型のコンストラクタがそれぞれ用意されているが、
+Cでparmがオーバーライドされている
+
+そのため、Eではdouble型の引数にも関わらずintを引数に取るコンストラクタが呼ばれ、作成者の意図に沿っているのか分かりづらい動きとなっている
