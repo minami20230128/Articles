@@ -22,8 +22,9 @@ class Stack
 
         int pop()
         {
+            auto ret = this->data[top];
             this->top -= 1;
-            return this->data[top];
+            return ret;
         }
 };
 
@@ -43,3 +44,8 @@ int main()
     return 0;
 }
 
+//出力結果：
+//20
+//10
+
+//後からプッシュした20のほうが先にポップされていることがわかる
