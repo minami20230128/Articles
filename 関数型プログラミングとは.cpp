@@ -27,10 +27,14 @@ int main()
     printf("%d", add(a));
     printf("%d", add(a));//どちらも2になる
 
-//さらに、ラムダ式を使うことで使い捨ての無名関数を作ることが出来る
+//さらに、ラムダ式を使うことで関数に状態を持たせることが出来る
     int b = 1;
-    auto add = [b](int& a){return a + b;};
+    auto add = [b](int& a){return a + b;};//*
+    std::cout << add(a) << std::endl;
+    b = 100;
     std::cout << add(a) << std::endl;
     return 0;
 }
 
+//bはキャプチャといい、ラムダ式に渡した時点(*)で固定されるので、あとから別の値を代入してもadd関数内の値は変えることが出来ない
+//このように、関数に状態を持たせることをクロージャと呼ぶ
