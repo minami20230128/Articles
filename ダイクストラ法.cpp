@@ -25,3 +25,71 @@
 
 //よって、A-B-Eの経路が最短である
 
+//実装
+#include <vector>
+#include <map>
+#include <string>
+
+struct Node
+{
+    std::string name;
+    std::map<Node, int> nextnodes;
+    int minimumdist = INT_MAX;
+
+    public:
+    Node(std::string name)
+    {
+        this->name = name;
+    }
+
+    int GetDistance(const Node dst)
+    {
+        auto itr = this->nextnodes.begin();
+        while (itr != this->nextnodes.end())
+        {
+            if (itr->first.name == dst.name)
+            {
+                return itr->second;
+            }
+
+            itr++;
+        }
+    }
+};
+
+int main()
+{
+    Node nodeA = Node("A");
+    Node nodeB = Node("B");
+    Node nodeC = Node("C");
+    Node nodeD = Node("D");
+    Node nodeE = Node("E");
+
+    nodeA.nextnodes = {{nodeB, 7}, {nodeC, 4}, {nodeD, 3}};
+    nodeB.nextnodes = {{nodeA, 4}, {nodeC, 1}, {nodeE, 2}};
+    nodeC.nextnodes = {{nodeA, 4}, {nodeE, 6}};
+    nodeD.nextnodes = {{nodeA, 3}, {nodeE, 5}};
+    nodeE.nextnodes = {{nodeB, 2}, {nodeC, 6}, {nodeD, 5}};
+    
+    std::vector<Node> V = {nodeA, nodeB, nodeC, nodeD, nodeE};
+    std::vector<Node> S = {};
+
+    int nodenumber = V.size();
+
+    auto itr = V.begin();
+    while(itr != V.end())
+    {
+        Node processnode = *itr;
+        V.erase(itr);
+        S.push_back(processnode);
+
+        for(auto&& node : V)
+        {
+            if(processnode.GetDistance(node) < node.minimumdist)
+            {
+                node.minimumdist = processnode.GetDistance(node) + node.minimumdist;
+            }
+        }
+    }
+    return 0;
+}
