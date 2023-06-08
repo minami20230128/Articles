@@ -11,3 +11,16 @@ print(list(doubled_list))#map関数が返すのはmapオブジェクトなので
 
 #実行結果
 #[2, 4, 6, 8, 10]
+
+#2. reduce関数
+#イテラブルオブジェクトの全ての要素を順番に処理していく関数
+
+from functools import reduce
+
+def add(x, y):
+    return x + y
+addedlist = reduce(add, numberlist)
+print(addedlist)
+
+#実行結果
+#15
