@@ -1,16 +1,35 @@
 ・モジュールについて
 main.rsから分割したファイルはモジュール宣言が必要
     mod [ファイル名]
-    例えばcommands.rsというファイルならmain.rsの中で「mod command」sと宣言する
+    例えばcommands.rsというファイルならmain.rsの中で「mod commands」と宣言する
 
-以下のようにディレクトリが分かれていて、typesディレクトリの中のdog.rsを参照したい場合
-├── commands.rs
+以下のようなファイル構成の場合、
+├── book.rs
 ├── main.rs
-├── types
-│   └── dog.rs
+├── bookshelf.rs
+└── category
+    ├── commic.rs
+    ├── magazine.rs
+    └── dictionery.rs
 
-まずtypes.rs(ディレクトリと同名のファイル)を作成
-->types.rsの中で 「pub mod dog」 を宣言
-->main.rsの中で 「mod types」
+1. mainからそれ以外を参照したい(main.rsからbook.rsを参照)
+main.rsに
+    mod book;
+と書く
 
-pubはtypes.rsのみならず他のファイルからもdogモジュールを参照したいときの宣言
+2. main以外から他のファイルを参照したい(bookshelf.rsからbook.rsを参照)
+bookshelf.rsに
+    #[path = "./book.rs"](book.rsのパス)
+    mod book;
+と書く
+
+3. 下位ディレクトリのモジュールを読み込みたい(commis.rs・magazine.rs・dictionery.rs)
+下位ディレクトリと同名のファイルを作成する(category.rs)
+そして、category.rsの中で
+    pub mod commic;
+    pub mod magazine;
+    pub mod dictionery;
+と宣言、
+main.rsに
+    mod category(categoryモジュールをインポートすることで、その中のモジュールを取り込める)
+と書く
