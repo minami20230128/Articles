@@ -1,0 +1,42 @@
+・SQLインジェクションとは
+SQL文を挿入して、情報漏洩や改竄など不正な動きを引き起こすこと
+
+例：
+以下のような「user」テーブルがあったとする
+   id   | password 
+--------+----------
+ taro   |    11111
+ hanako |    22222
+ jiro   |    33333
+
+userテーブルの作成手順
+set schema 'public';
+create table employee(id varchar, password integer);
+insert into employee (id, password) values ('taro', 11111), ('hanako', 22222), ('jiro', 33333);
+
+
+例えば、idを入力してそのユーザの全情報が確認できる機能を実現するには、
+select * from employee WHERE "id" = (入力されたID) 
+というSQL文が有効である
+
+しかし、IDの入力欄に
+'taro' or '1' = '1';
+のような常に成立する文言を挿入すると、userテーブルの全データが表示されてしまう
+
+実行結果:
+SELECT * FROM employee WHERE "id" = 'taro' or '1' = '1';
+   id   | password 
+--------+----------
+ taro   |    11111
+ hanako |    22222
+ jiro   |    33333
+(3 行)
+
+対策：
+1.エスケープ文字
+SELECT * FROM employee WHERE "id" = 'taro'' or '1' = '1';
+のように、シングルクオテーションなどを使ってSQL文をただの文字列として認識させ攻撃を防ぐことが可能
+
+2.プレースホルダ
+SELECT * FROM employee WHERE "id" = ?
+のように、入力したい項目を仮置きしてあとからくっつける
