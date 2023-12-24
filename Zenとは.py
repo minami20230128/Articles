@@ -38,3 +38,17 @@ print(getcwd())
 OK:
 import os
 print(os.getcwd())
+
+2. Complex is better than complicated.
+複雑(誰でも知っている関数・機能でごちゃごちゃ書く)より、難解(知らない関数でシンプルに書く)のほうがよい
+ロジックを読み解くコスト > 知らない関数を調べるコスト
+
+NG:
+counter = 0
+while counter < 5:
+   print(counter)
+   counter += 1
+
+OK:
+for i in xrange(5):
+   print(i)
