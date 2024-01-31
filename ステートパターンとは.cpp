@@ -18,7 +18,7 @@ class FainState : public State
     public:
     FainState()
     {
-        
+
     };
     std::pair<int, std::string> drive() override
     {
