@@ -1,16 +1,47 @@
 //・ステートパターンとは
 //モノの状態遷移を大量のif文を使わなくても表現できるデザインパターンの一種
-//状態クラスを作成し、状態が変化したときにクラスを入れ替えるイメージ
+//状態クラス...状態の種類ごとに作られる。ある状態のときどうなるか、どのようなときに他の状態に移るかを表す
+//Contextクラス...現在どちらの状態なのかを表す。また最初どの状態からスタートするかを設定する
 
 #include <iostream>
 #include <string>
-#include <map>
+
+class Context;
 
 class State
 {
     public:
-    virtual std::pair<int, std::string> drive() = 0;
-    virtual std::pair<int, std::string> walk() = 0;
+    virtual void drive(Context* context) = 0;
+    virtual void walk(Context* context) = 0;
+
+    protected:
+    virtual void _display_parameters() = 0;
+};
+
+class FainState;
+
+class Context
+{
+    State* _state;
+    public:
+    Context(State* state) : _state(nullptr)
+    {
+        this->set_state(state);
+    }
+    void set_state(State* p_state)
+    {
+        this->_state = p_state;
+    }
+
+    void drive()
+    {
+        this->_state->drive(this);
+    }
+
+    void walk()
+    {
+        this->_state->walk(this);
+    }
 };
 
 class FainState : public State
@@ -20,14 +51,18 @@ class FainState : public State
     {
 
     };
-    std::pair<int, std::string> drive() override
-    {
-        return std::make_pair(80, "免許証");
-    }
 
-    std::pair<int, std::string> walk() override
+    void drive(Context* context) override;
+    void walk(Context* context) override;
+
+    private:
+    std::string belongings;
+    int distance;
+    Context* context;
+
+    void _display_parameters() override
     {
-        return std::make_pair(20, "お弁当");
+         std::cout << "移動距離 : " << this->distance << "持ち物 : " << this->belongings << std::endl;
     }
 };
 
@@ -38,44 +73,64 @@ class RainState : public State
     {
 
     };
-    std::pair<int, std::string> drive() override
+    void drive(Context* context) override
     {
-        return std::make_pair(80, "免許証、傘");
+        this->belongings = "免許証、傘";
+        this->distance = 60;
+        this->_display_parameters();
+        auto p_fain_state = new FainState();
+        context->set_state(p_fain_state);
     }
 
-    std::pair<int, std::string> walk() override
+    void walk(Context* context) override
     {
-        return std::make_pair(80, "傘");
+        this->belongings = "傘";
+        this->distance = 80;
+        this->_display_parameters();
+        auto p_fain_state = new FainState();
+        context->set_state(p_fain_state);
+    }
+
+    private:
+    std::string belongings;
+    int distance;
+
+    void _display_parameters() override
+    {
+         std::cout << "移動距離 : " << this->distance << "持ち物 : " << this->belongings << std::endl;
     }
 };
 
-class Person
+void FainState::drive(Context* context) 
 {
-    State* state;
-    public:
-    void change_state(State* p_state)
-    {
-        this->state = p_state;
-    }
+    this->belongings = "免許証";
+    this->distance = 80;
+    this->_display_parameters();
+    context->set_state(new RainState());
+}
 
-    std::pair<int, std::string> drive()
-    {
-        return this->state->drive();
-    }
-
-    std::pair<int, std::string> walk()
-    {
-        return this->state->drive();
-    }
-};
+void FainState::walk(Context* context) 
+{
+    this->belongings = "お弁当";
+    this->distance = 20;
+    this->_display_parameters();
+    context->set_state(new RainState());
+}
 
 int main()
 {
-    auto person = Person();
-    auto p_rain_state = new RainState();
-    person.change_state(p_rain_state);
-    auto result = person.drive();
-    std::cout << "移動距離：" << std::to_string(result.first) << "持ち物" << result.second << std::endl;
-
+    auto context = Context(new FainState());
+    context.drive();
+    context.walk();
     return 0;
 }
+
+//walkかdriveを一度実行すると、もう一方の状態に遷移する。
+//そのため、
+//123行目...晴れ・drive
+//124行目...雨・walk
+//となる。
+
+//実行結果：
+//移動距離 : 80持ち物 : 免許証
+//移動距離 : 80持ち物 : 傘
