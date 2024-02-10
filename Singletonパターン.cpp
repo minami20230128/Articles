@@ -6,27 +6,28 @@
 #include <libpq-fe.h>
 #include <pqxx/pqxx>
 #include <string>
+#include <iostream>
 
 class DataBase
 {
     private:
-    static DataBase instance;
-    pqxx::work work;
+    static DataBase* instance;
+    pqxx::read_transaction work;
     DataBase()
     {
-        auto connection = pqxx::connection connection{"postgresql:///shop?host=localhost&port=/*5432*/&user=/*hirataminami*/"};
-        this->work = pqxx::work work(connection);
+        auto connection = new pqxx::connection{"postgresql:///shop?host=localhost&port=/*5432*/&user=/*hirataminami*/"};
+        this->work = new pqxx::read_transaction(*connection);
     }
 
     public:
-    static DataBase get_instance()
+    static DataBase* get_instance()
     {
-        if(this->instance == null)
+        if(DataBase::instance == nullptr)
         {
-            this->instance = new DataBase();
+            DataBase::instance = new DataBase();
         }
 
-        return this->instance;
+        return DataBase::instance;
     }
 
     void execute_query(std::string query)
@@ -44,7 +45,7 @@ class DataBase
 
 int main()
 {
-    DataBase db = DataBase.get_instance():
+    DataBase* db = DataBase::get_instance():
     db.execute_query("select * from 'public'.employee;");
     
     return 0;
