@@ -3,20 +3,21 @@
 //DBの設定など、システム全体で使うインスタンスが上書きされないようにする
 
 
-#include <libpq-fe.h>
+#include <postgresql@14/libpq-fe.h>
 #include <pqxx/pqxx>
 #include <string>
 #include <iostream>
+#include <memory>
 
 class DataBase
 {
     private:
     static DataBase* instance;
-    pqxx::read_transaction work;
-    DataBase()
+    pqxx::work* work;
+    DataBase() 
     {
-        auto connection = new pqxx::connection{"postgresql:///shop?host=localhost&port=/*5432*/&user=/*hirataminami*/"};
-        this->work = new pqxx::read_transaction(*connection);
+        auto connection = new pqxx::connection{"host=localhost&port=/*5432*/&user=/*hirataminami*/"};
+        this->work = new pqxx::work(*connection);
     }
 
     public:
@@ -34,19 +35,20 @@ class DataBase
     {
         try
         {
-           this->work.exec(query);
+           this->work->exec(query);
         }
         catch(const std::exception& e)
         {
             std::cerr << e.what() << '\n';
         }
     }
-}
+};
 
 int main()
 {
-    DataBase* db = DataBase::get_instance():
-    db.execute_query("select * from 'public'.employee;");
+    DataBase* db = DataBase::get_instance();
+    db->execute_query("select * from 'public'.employee;");
     
     return 0;
 }
+
