@@ -9,45 +9,59 @@
 
 pub struct RegularDiscountedPrice
 {
-    
+    rate_by_age : f32
 }
 
 impl RegularDiscountedPrice
 {
-    pub fn get_discounted_price(price : i32) -> i32{
-        const DISCOUNT_RATE : f64 = 0.1;
-        return DISCOUNT_RATE * price;
+    pub fn get_discounted_price(&self, age : i32, price : i32) -> i32{
+        let rate_by_age = self.get_discount_rate(age);
+        const DISCOUNT_RATE : f32 = 0.1;
+        return (1 - DISCOUNT_RATE * rate_by_age) * price;
     }
 }
 
 pub struct SummerDiscountedPrice
 {
-    
+    rate_by_age : f32
 }
 
 impl SummerDiscountedPrice
 {
-    pub fn get_discounted_price(price : i32) -> i32{
-        const DISCOUNT_RATE : f64 = 0.12;
-        return DISCOUNT_RATE * price;
+    pub fn get_discounted_price(&self, age : i32, price : i32) -> i32{
+        let rate_by_age = self.get_discount_rate(age);
+        const DISCOUNT_RATE : f32 = 0.12;
+        return (1 - DISCOUNT_RATE * rate_by_age) * price;
     }
 }
 
 trait DiscountRateByAge
 {
-    fn get_discounted_price(age : i32) -> f32;
+    fn get_discount_rate(&self, age : i32) -> f32;
 }
 
 impl DiscountRateByAge for RegularDiscountedPrice
 {
-    fn get_discounted_price(age : i32) -> f32{
+    fn get_discount_rate(&self, age : i32) -> f32{
         return 1 + age / 100;
     }
 }
 
 impl DiscountRateByAge for SummerDiscountedPrice
 {
-    fn get_discounted_price(age : i32) -> f32{
+    fn get_discount_rate(&self, age : i32) -> f32{
         return 1 + age / 100;
     }
+}
+
+fn main()
+{
+    let regular = RegularDiscountedPrice{rate_by_age : 0};
+    let summer = SummerDiscountedPrice{rate_by_age : 0};
+
+    let age = 20;
+    let price = 400;
+
+    println!("Regular : {}", regular.get_discounted_price(age, price));
+    println!("Regular : {}", summer.get_discounted_price(age, price));
 }
