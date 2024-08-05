@@ -19,6 +19,8 @@
 //  --------
 //  00010101 (21)
 
+#include <iostream>
+
 bool eql(int a, int b) {
     if(a ^ b) return false;
     return true;
@@ -44,11 +46,18 @@ int add(int a, int b)
     return add(a ^ b, (a & b) << 1);
 }
 
-#include <iostream>
+//減算
+//a - b = a + (bの2の補数)の下一桁
+
+int sub(int a, int b) {
+    int comp = add(~b, 1);
+    return add(a, comp);
+}
 
 int main()
 {
     std::cout << add(1, 2) << std::endl;
+    std::cout << sub(2, 1) << std::endl;
 
     return 0;
 }
