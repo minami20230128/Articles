@@ -1,4 +1,4 @@
-・AWS Well-Architected Frameworkとは
+# AWS Well-Architected Frameworkとは
 6つの柱からなるAWSでシステム構築する際の設計指針であり、
 既存のシステムをこれに照らし合わせることで適切なアーキテクチャになっているかが確認できる。
 具体的には以下。
