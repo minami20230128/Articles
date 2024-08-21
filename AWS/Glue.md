@@ -1,5 +1,5 @@
-・AWS Glue  
+# AWS Glue  
 ETLサービスであり、データソースから取り込んだデータを加工、結果をターゲットに格納することが可能。
 
-!(../image/AWS_Glue_概念図.png)
+![概念図](../image/AWS_Glue_概念図.png)
 
