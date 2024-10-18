@@ -5,30 +5,28 @@
 #include <iostream>
 #include <vector>
 
-std::vector<int> fibonacci(std::vector<int> answers, int count)
+int fibonacci(std::vector<int> answers)
 {
-    auto idx = answers.size();
-    std::cout << "idx = " << idx << std::endl;
-    if(idx < 2) return answers;
-    while(count > 0)
-    {
-        answers.push_back(answers[idx] + answers[idx - 1]);//最後尾に前の２つの項の合計を格納
-        std::cout << "answer = " << (answers[idx] + answers[idx - 1]) << std::endl;//2
-        return fibonacci(answers, count - 1);
-    }
+    const auto SECOND_IDX = answers.size() - 1;
+    const auto FIRST_IDX = answers.size() - 2;
 
-    if(count == 0) return answers;
+    return answers[FIRST_IDX] + answers[SECOND_IDX];
 }
 
 int main()
 {
     //最初の2項は配列に入れておく
-    std::vector<int> nums{1, 1};
-    auto answers = fibonacci(nums, 1);
+    std::vector nums{1, 1};
 
-    for(auto&& answer : answers)
+    for(int i = 0; i < 12; i++)
     {
-        std::cout << answer << std::endl;//1,1,1?
+        int answer = fibonacci(nums);
+        nums.push_back(answer);
+    }
+
+    for(auto&& num : nums)
+    {
+        std::cout << num << std::endl;
     }
     
     return 0;
