@@ -33,7 +33,7 @@ class SgStrangeCalender
         //各月の最初の日の曜日を求める
         int weekDay = this->DayOfWeek(year, month, 1);
         //各月の日数を求める
-        int dayNum = this->DayNumPerMonth(year, month);
+        unsigned int dayNum = this->DayNumInMonth(year, month);
         //0番目の要素が月名の配列を作る
         std::vector<std::string> month_calender{this->month_names[i]};
         //1日の曜日が日曜なら1番目、月曜なら2番目...から順に配列に日付を格納していく
@@ -58,26 +58,29 @@ class SgStrangeCalender
         std::chrono::month month{m};
         std::chrono::day day{d};
 
-        std::chrono::year_month_day ymd{year, month, day};
+        std::chrono::year_month_day ymd{year/month/day};
         auto sys_days = std::chrono::sys_days{ymd};
         std::chrono::weekday wd = std::chrono::weekday{sys_days};
 
         return wd.c_encoding();
     }
 
-    int DayNumPerMonth(int y, int m)
-    [
+    unsigned int DayNumInMonth(int y, int m)
+    {
         std::chrono::year year{y};
         std::chrono::month month{m};
 
-        return std::chrono::year_month{year, month}.days_in_month();
-    ]
+        std::chrono::year_month_day_last ymdl{year/month/std::chrono::last};
+        auto day = ymdl.day();
+
+        return static_cast<unsigned int>(day);
+    }
 
 };
 
 int main()
 {
-    auto sgStangeCalender = new SgStangeCalender();
+    SgStrangeCalender sgStangeCalender = new SgStrangeCalender(2024);
 
     return 0;
 }
