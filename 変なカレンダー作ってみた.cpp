@@ -9,9 +9,9 @@
 class SgStrangeCalender
 {
     public:
-    void SgStangeCalender(int year)
+    SgStrangeCalender(int year)
     {
-        for(int i = 0; i < 12; i++)
+        for(int i = 1; i <= 12; i++)
         {
             auto month_calender = this->GenerateEachMonthCalender(year, i);
 
@@ -34,25 +34,27 @@ class SgStrangeCalender
         int weekDay = this->DayOfWeek(year, month, 1);
         //各月の日数を求める
         unsigned int dayNum = this->DayNumInMonth(year, month);
+        std::cout << dayNum << std::endl;
         //0番目の要素が月名の配列を作る
-        std::vector<std::string> month_calender{this->month_names[i]};
+        std::vector<std::string> month_calender{this->month_names[month - 1]};
         //1日の曜日が日曜なら1番目、月曜なら2番目...から順に配列に日付を格納していく
-        for(int i = 0; i <= dayNum; i++)
+
+        for(int i = 1; i <= weekDay; i++)
         {
             month_calender.push_back("");
         }
 
         int date = 1;
-        for(int i = weekDay + 1; i <= dayNum; i++)
+        for(int i = 0; i < dayNum; i++)
         {
-            month_calender[i] = date;
+            month_calender.push_back(std::to_string(date));
             date++;
         }
 
         return month_calender;
     }
 
-    int DayOfWeek(int y, int m, int d)
+    int DayOfWeek(int y, unsigned int m, unsigned int d)
     {
         std::chrono::year year{y};
         std::chrono::month month{m};
@@ -65,7 +67,7 @@ class SgStrangeCalender
         return wd.c_encoding();
     }
 
-    unsigned int DayNumInMonth(int y, int m)
+    unsigned int DayNumInMonth(int y, unsigned int m)
     {
         std::chrono::year year{y};
         std::chrono::month month{m};
@@ -80,7 +82,7 @@ class SgStrangeCalender
 
 int main()
 {
-    SgStrangeCalender sgStangeCalender = new SgStrangeCalender(2024);
+    SgStrangeCalender* sgStangeCalender = new SgStrangeCalender(2024);
 
     return 0;
 }
