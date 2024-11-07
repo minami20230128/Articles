@@ -11,14 +11,40 @@ class SgStrangeCalender
     public:
     SgStrangeCalender(int year)
     {
+        std::vector<std::vector<std::string>> calender;
+
         for(int i = 1; i <= 12; i++)
         {
             auto month_calender = this->GenerateEachMonthCalender(year, i);
 
-            for(auto&& date : month_calender)
+            calender.push_back(month_calender);
+
+            //for(auto&& date : month_calender)
+            //{
+            //    std::cout << date << std::endl;
+            //}
+        }
+
+        const std::array<std::string, 7> week_names = {
+            "Sun ", "Mon ", "Tue ", "Wed ", "Thu ", "Fri ", "Sat "
+        };
+
+        std::vector<std::string> week_column{std::to_string(year)};
+
+        for(int i = 0; i < 6; i++)
+        {
+            week_column.insert(week_column.end(), week_names.begin(), week_names.end());
+        }
+
+        calender.insert(calender.begin(), week_column);
+
+        for(int j = 0; j < 36; j++)
+        {
+            for(int i = 0; i < calender.size(); i++)
             {
-                std::cout << date << std::endl;
+                std::cout << calender[i].at(j) << " ";
             }
+            std::cout << std::endl;
         }
     }
 
@@ -41,14 +67,23 @@ class SgStrangeCalender
 
         for(int i = 1; i <= weekDay; i++)
         {
-            month_calender.push_back("");
+            month_calender.push_back("   ");
         }
 
         int date = 1;
         for(int i = 0; i < dayNum; i++)
         {
-            month_calender.push_back(std::to_string(date));
+            std::string buffer = date / 10 > 0 ? " " : "  ";
+            month_calender.push_back(std::to_string(date) + buffer);
             date++;
+        }
+
+        if(month_calender.size() < 43)
+        {
+            for(int i = 0; i < 43 - month_calender.size(); i++)
+            {
+                month_calender.push_back("   ");
+            }
         }
 
         return month_calender;
