@@ -2,6 +2,6 @@
 クラウドサービスにおいて、業者側が用意する範囲の違い
 
 Iaas(Infrastructure as a Service)...仮想マシンのみ
-Paas(Platform as a Service)...仮想マシン、S/ミドルウェア
+Paas(Platform as a Service)...仮想マシン、OS/ミドルウェア
 Saas(Software as a Service)...仮想マシン、OS/ミドルウェア、アプリケーション
 
