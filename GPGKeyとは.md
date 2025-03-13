@@ -1,9 +1,9 @@
-・GPG Keyとは
-GNU Privacy Guardというオープンソースの公開鍵。
-パッケージのインストール時には、正しい発行元からインストールできているかをGPG鍵を使って確認するために使われる。
+# ・GPG Keyとは  
+GNU Privacy Guardというオープンソースの公開鍵。  
+パッケージのインストール時には、正しい発行元からインストールできているかをGPG鍵を使って確認するために使われる。  
 それ以外にも、署名やメールの暗号化・復号化など一般的な公開鍵と同じ用途で使用される。
 
-*Fluent BitのインストールにおけるGPG Keyの使用の流れ
+## 例: Fluent BitのインストールにおけるGPG Keyの使用の流れ
 1. 配布元のコミュニティが秘密鍵でパッケージを暗号化
 2. インストールする人が公開鍵をインストール
 curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg
