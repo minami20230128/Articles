@@ -1,6 +1,6 @@
 # ・JavaScriptはなぜブラウザで動作できるのか？
 現状、ブラウザで動作しDOM操作などを行うことができる言語はJavaScriptしかない。
-また、JavaScriptはサーバサイドではそのままで動使用できず、Node.jsを使用しなければならない。
+また、JavaScriptはサーバサイドではそのままで動作せず、Node.jsを使用しなければならない。
 JavaScriptとその他の言語の違いは何なのだろうか？
 
 ## ・JavaScriptがブラウザで動作する理由
@@ -14,7 +14,7 @@ Firefox: SpiderMonkeyエンジン
 Safari: JavaScriptCore（Nitroエンジン）  
 Microsoft Edge: Chakraエンジン（以前）やV8エンジン（現在）  
 
-他の言語を動かそうを思った場合、WebAssemblyを用いてwasmモジュールを作成し、JavaScriptから呼び出す方法が現実的。
+他の言語を動かそうと思った場合、WebAssemblyを用いてwasmモジュールを作成し、JavaScriptから呼び出す方法が現実的。
 
 ## ・JavaScriptがサーバサイドで動かない理由
 ブラウザ操作に特化した言語なので、必要な処理を行うライブラリがないから。  
