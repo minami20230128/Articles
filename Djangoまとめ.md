@@ -37,3 +37,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 ```
+
+## DBテーブル作成方法
+settings.pyの設定通りにマイグレーションを行う。
+```
+python manage.py migrate
+```
+**manage.py**とは、Djangoの管理用スクリプト。  
+これを通して、プロジェクトの設定を反映しながらマイグレーションを実行する。
