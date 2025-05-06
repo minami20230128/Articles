@@ -45,3 +45,49 @@ python manage.py migrate
 ```
 **manage.py**とは、Djangoの管理用スクリプト。  
 これを通して、プロジェクトの設定を反映しながらマイグレーションを実行する。
+
+## モデルの作成
+**models.py**に作成するのが一般的な監修。
+以下のように、テーブル名=クラス名、カラム名=変数名として定義。
+
+```
+from django.db import models
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField("date published")
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+```
+
+## モデルの有効化
+**mysite/settings.py**にアプリケーションを登録する。
+
+```
+INSTALLED_APPS = [
+    "polls.apps.PollsConfig",  <-この行
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+]
+```
+
+manage.pyを通して、pollsアプリケーションのモデルの変更点を検出し、マイグレーションファイルを作成するコマンド。  
+新しく作ったQuestion、Choiceモデルを反映する。
+```
+python manage.py makemigrations polls
+```
+
+このコマンドでマイグレーションが発行するSQLの内容を確認できる。
+以下pollsアプリのマイグレーションファイル・0001_initial.py に対応するSQL文を表示するもの。
+```
+python manage.py sqlmigrate polls 0001
+```
