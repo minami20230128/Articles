@@ -91,3 +91,63 @@ python manage.py makemigrations polls
 ```
 python manage.py sqlmigrate polls 0001
 ```
+
+## 対話シェル
+対話シェルとは、ちょっとしたPythonコードを実行してDB操作などの動作確認ができるツール。
+以下のコマンドで起動可能。
+```
+python manage.py shell
+```
+
+```
+>>> from polls.models import Choice, Question  # Import the model classes we just wrote.
+
+ChoiceモデルとQuestionモデルを読み込み、これ以降で使えるようにしている。
+
+# No questions are in the system yet.
+>>> Question.objects.all()
+<QuerySet []>
+
+Questionテーブルの全てのレコードを取得。（空）
+
+# Create a new Question.
+# Support for time zones is enabled in the default settings file, so
+# Django expects a datetime with tzinfo for pub_date. Use timezone.now()
+# instead of datetime.datetime.now() and it will do the right thing.
+>>> from django.utils import timezone
+>>> q = Question(question_text="What's new?", pub_date=timezone.now())
+
+Questionオブジェクトを作成。
+
+# Save the object into the database. You have to call save() explicitly.
+>>> q.save()
+
+作成したQuestionオブジェクトをDBに保存する。
+
+# Now it has an ID.
+>>> q.id
+1
+
+保存したオブジェクトをDB登録したときに、自動採番されたIDを表示する。
+
+# Access model field values via Python attributes.
+>>> q.question_text
+"What's new?"
+>>> q.pub_date
+datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=datetime.timezone.utc)
+
+question_textとpub_dateが指定したとおりになっていることを確認。
+
+# Change values by changing the attributes, then calling save().
+>>> q.question_text = "What's up?"
+>>> q.save()
+
+Questionオブジェクトのテキストを変更して再度保存。
+
+# objects.all() displays all the questions in the database.
+>>> Question.objects.all()
+<QuerySet [<Question: Question object (1)>]>
+```
+
+再度DBに保存されているQuestonをずべて表示。
+1件保存されていることが分かる。
