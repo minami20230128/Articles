@@ -202,10 +202,24 @@ urlpatterns = [
     path("<int:question_id>/vote/", views.vote, name="vote"),
 ]
 ```
+path("<int:question_id>/", views.detail, name="detail")の1行を例にとって説明すると、
+- <int:question_id>...question_idという数値を受け取る
+- views.detail...views.pyのdetail関数が呼ばれる
+- name="detail"...「/polls/5/」のような形式のURLに「detail」という名前をつけている
+  例:  
+  polls/index.htmlには、 
+  ```
+  <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+  ```
+  このように「/polls/{{ question.id }}/」とURLをハードコートすることも可能だが、  
+  ```
+  <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+  ```
+  'detail'という名前をつけたほうが可読性が上がる。
 
 ### テンプレートの分離
 
-polls/templates/polls/index.html...テンプレート
+polls/templates/polls/index.html...テンプレート。Pythonの変数をHTMLに埋め込むための仕組み。
 ```
 {% if latest_question_list %}
     <ul>
@@ -218,13 +232,17 @@ polls/templates/polls/index.html...テンプレート
 {% endif %}
 ```
 
-polls/views.py...テンプレートを読み込みQuestionテーブルの内容を表示
+### テンプレートの呼び出し方・ショートカット
+- 通常のテンプレートロード  
+行う処理は以下の3段階。
+1. loader.get_template()でテンプレートを読み込む
+2. Questionテーブルから読み出したデータをcontext(後述)としてテンプレートに渡す
+3. HttpResponse()でレスポンスとして返す
 ```
 from django.http import HttpResponse
 from django.template import loader
 
 from .models import Question
-
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -233,4 +251,75 @@ def index(request):
         "latest_question_list": latest_question_list,
     }
     return HttpResponse(template.render(context, request))
+```
+
+上は冗長な書き方で、**ショートカットバージョン**の**Render()関数**の仕様が推奨されている。
+```
+from django.shortcuts import render
+from .models import Question
+
+def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    context = {"latest_question_list": latest_question_list}
+    return render(request, "polls/index.html", context)
+```
+
+**context**...テンプレートに埋め込む変数を渡すための辞書型の変数。
+4行目の
+```
+context = {
+        "latest_question_list": latest_question_list,
+    }
+```
+のこと。
+
+- 404 エラーの送出
+行っている処理としては、
+1. URLで渡されたquestion_idに当てはまるQuestionを取得
+2. 取得できなかった場合404を発生させる
+```
+from django.http import Http404
+from django.shortcuts import render
+
+from .models import Question
+
+# ...
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, "polls/detail.html", {"question": question})
+```
+
+この処理にもショートカットがあり、**get_object_or_404()**の使用が推奨されている。
+```
+from django.shortcuts import get_object_or_404, render
+
+from .models import Question
+
+# ...
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, "polls/detail.html", {"question": question})
+```
+### URLに名前空間を作る方法
+polls/urls.pyに「app_name = "polls"」という記述を追加する。
+```
+from django.urls import path
+
+from . import views
+
+app_name = "polls"
+urlpatterns = [
+    path("", views.index, name="index"),
+    path("<int:question_id>/", views.detail, name="detail"),
+    path("<int:question_id>/results/", views.results, name="results"),
+    path("<int:question_id>/vote/", views.vote, name="vote"),
+]
+```
+
+index.htmlのURL部分を「detail->polls/detail」に置き換える
+```
+<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
 ```
