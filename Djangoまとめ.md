@@ -323,3 +323,19 @@ index.htmlのURL部分を「detail->polls/detail」に置き換える
 ```
 <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
 ```
+
+## テスト
+### どこに書くか
+デフォルトでtests.pyというファイルが生成されるので、基本的にそこに書くことが推奨される。  
+ただし、複数ファイルに分けてもOK。ファイル名が**「test〇〇.py」**であればDjangoのDiscovery機能に自動的に見つけてもらえる。
+
+### 実行方式
+shellから実行する方式と、python manage.py testで実行する方式がある。  
+shell...1行ずつ動きを確かめる
+python manage.py test...一括で実行可能
+
+### いろいろライブラリ  
+- from django.test import TestCase  
+テスト用DBを自動で用意してくれる  
+- from django.test import Client
+PythonコードからWebブラウザのリクエストを擬似的に送れる
