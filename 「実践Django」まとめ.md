@@ -1,4 +1,18 @@
 # ・「実践Django」まとめ  
+## 1章
+HttpRequestクラスはビュー関数を直接呼び出すため、ビュー関数の単体テスト用。
+```
+from django.http import HttpRequest
+request = HttpRequest()
+response = top(request)
+```
+Clientクラスはエンドポイントにリクエストを送るため、結合テスト・E2Eテスト用。
+```
+from django.test import Client
+client = Client()
+response = client.get("/")
+```
+
 ## 2章
 - モデルがどのようなSQLでマイグレーションされるかは、以下のコマンドで確認可能。
 ```
