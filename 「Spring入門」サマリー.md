@@ -3,7 +3,7 @@
 ## データアクセス層
 DAO...DBアクセス処理をオブジェクトに分離するパターン。  
 データアクセス方式の変更を隠蔽し、ビジネスロジックに影響を与えないようにすることが可能。
-JPA...ORマッパーの仕様。JPAを利用するプログラムは、Entityクラス・EntityManagerクラス（Entityオブジェクトのライフサイクル管理とDAO機能を提供）を使用する。
+JPA...ORマッパーの仕様。JPAを利用するプログラムは、Entityクラス・EntityManagerクラス（Entityオブジェクトのライフサイクル管理とDAO機能を提供）を使用する。  
 Spring Data JPA...EntityマネージャクラスのCRUD処理を行うメソッド呼び出し部分を自動生成する。
 JpaRepositoryインターフェース...Spring Data JPAを実現するためのインターフェース。これを所定のクラスに継承する。
 
