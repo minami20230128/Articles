@@ -6,7 +6,7 @@
 # ・関数を境界値で分ける
 # ・ビジネスドメインに基づき、意味のある最小単位で分割する
 
-# 以下、この基準を使って分割してみる。
+# 以下。この2つの基準に従って実装してみたもの
 
 # 例題：ユーザーの年齢でカテゴリを判定する関数
 # 要件
@@ -56,16 +56,16 @@ def test_invalid():
 
 def test_child():
     judgement = AgeJudgement()
-    assert judgement.is_child(12) == "child"
+    assert judgement.judge(12) == "child"
     
 def test_teen():
     judgement = AgeJudgement()
-    assert judgement.is_teen(19) == "teen"
+    assert judgement.judge(19) == "teen"
 
 def test_adult():
     judgement = AgeJudgement()
-    assert judgement.is_adult(64) == "adult"
+    assert judgement.judge(64) == "adult"
 
 def test_senior():
     judgement = AgeJudgement()
-    assert judgement.is_senior(65) == "senior"
+    assert judgement.judge(65) == "senior"
