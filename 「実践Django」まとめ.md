@@ -54,109 +54,24 @@ Djangoでこれを防ぐには2つの方法がある。
 ```
 
 ## 8章
-serializers.pyに、クラスをどのようにJSONに変更するかを書く。
-serializer.ModelSerializerを継承させる。
-```
-from rest_framework import serializers
-from .models import Task
+- JSON APIの実装方法
+serializers.py...Serializerクラスを利用してオブジェクトをJSONにシリアライズ・デシリアライズする方法を定める。  
+api_views.py...ViewSetsクラスを利用し、モデルに対するCRUD APIを一気に用意する。  
+api_urls.py...URLのマッピングを行う。Routerクラスを使用することで、api_views.pyに用意したAPIが一気に使えるようになる。
 
-class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = ['id', 'title', 'start_date', 'due_date', 'status']
+- ページネーションの実装方法
+以下の3つのクラスを利用して実装できる。  
+**PageNumberPagination**...ページ番号を指定  
+**LimitOffsetPagination**...開始位置と取得サイズを指定して取得  
+**CursorPagination**...特定のリソースを指定しそれより前、もしくはあとを取得する  
+どのページネーションを使用するかはsettings.pyで指定可能。  
+クラスベースビューを使用している場合は、pagination_class属性で指定できる。  
+絶対位置指定のAPIでは、ページネーションの途中であるデータが削除された場合、前後のデータが取得できなくなるズレを防止することが可能。  
+また、B木インデックスを使用したDBからデータ取得する場合も、相対位置指定のクラスより計算量少なく取得できる。  
+これらのメリット・デメリットを比較して使用することが重要。
 
-class TaskInputSerializer(serializers.Serializer):
-    title = serializers.CharField()
-    start_date = serializers.DateTimeField()
-    due_date = serializers.DateTimeField()
-    condition = serializers.CharField(required=False, allow_blank=True)
-    memo = serializers.CharField(required=False, allow_blank=True)
-    status = serializers.CharField(required=False, allow_blank=True)
-
-class StatusInputSerializer(serializers.Serializer):
-    status = serializers.CharField()
-```
-
-views.pyにエンドポイントを定義する。
-
-```
-# views.py
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from django.utils.timezone import now
-from .models import Task
-from .serializers import TaskSerializer, TaskInputSerializer, StatusInputSerializer
-
-class TaskViewSet(viewsets.ViewSet):
-
-    def list(self, request):
-        tasks = Task.objects.all()
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['post'], url_path='new')
-    def create_task(self, request):
-        serializer = TaskInputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        task = Task(**serializer.validated_data)
-        task.created_at = now()
-        task.save()
-        return Response(status=status.HTTP_200_OK)
-
-    def retrieve(self, request, pk=None):
-        try:
-            task = Task.objects.get(pk=pk)
-        except Task.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = TaskSerializer(task)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
-        serializer = TaskInputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        try:
-            task = Task.objects.get(pk=pk)
-        except Task.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        for attr, value in serializer.validated_data.items():
-            setattr(task, attr, value)
-        task.updated_at = now()
-        task.save()
-        return Response(status=status.HTTP_200_OK)
-
-    @action(detail=True, methods=['patch'], url_path='status')
-    def update_status(self, request, pk=None):
-        serializer = StatusInputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        try:
-            task = Task.objects.get(pk=pk)
-        except Task.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        task.status = serializer.validated_data['status']
-        task.save()
-        return Response(status=status.HTTP_200_OK)
-
-```
-urls.pyにURLのマッピング方法を書く。
-```
-from rest_framework.routers import DefaultRouter
-from .views import TaskViewSet
-
-router = DefaultRouter()
-router.register(r'tasks', TaskViewSet, basename='task')
-
-urlpatterns = router.urls
-```
-これを書くだけで、以下のルートが自動生成される。
-```
-| HTTPメソッド | URLパターン      | アクション           |
-| -------- | ------------ | --------------- |
-| GET      | /tasks/      | list            |
-| POST     | /tasks/      | create          |
-| GET      | /tasks/{pk}/ | retrieve        |
-| PUT      | /tasks/{pk}/ | update          |
-| PATCH    | /tasks/{pk}/ | partial\_update |
-| DELETE   | /tasks/{pk}/ | destroy         |
-
-```
+- APIのリクエスト制限
+settings.pyから以下のようなリクエスト制限方法を指定できる。
+AnonRateThrottle...未認証ユーザをIPアドレスベースで制限
+UserRateThrottle...認証済みユーザの主キーをベースにした制限
+ScopedRateThrottle...特定のAPIのアクセス制限（重いAPIなど）
