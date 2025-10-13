@@ -1,0 +1,30 @@
+<!-- コンテントセキュリティポリシー（CSP） -->
+<!-- コンテントセキュリティポリシーとは、リソース読み込み（特にJavaScript）を制限しセキュリティリスクを低減するための仕組み。 -->
+<!-- クロスサイトスクリプティングやクリックジャッキングの対策に役立つ。 -->
+
+<html>
+    <head>
+        <!-- script-srcはJavaScriptの有効範囲を決める。 -->
+        <!-- 'self' : main.jsのみ有効で、インラインスクリプトは実行できなくなる。 -->
+        <!-- 'unsafe-inline' : インラインスクリプトのみ実行できる。基本的に本番環境では使用しない。 -->
+        <!-- 本コードでは'self'が設定されているので、インラインスクリプトは実行できなくなっている。 -->
+        <meta charset="UTF-8" http-equiv="Content-Security-Policy" content="script-src 'self';">
+        <title>タイトル</title>
+    </head>
+    <body>
+        <input type="button" value="ここをクリック" id="button"></input>
+        <script>
+            function clickButton() {
+                alert("今クリックしたよね？");
+            }
+
+            let button = document.getElementById("button");
+            button.addEventListener("click", clickButton);
+        </script>
+    </body>
+</html>
+
+<!-- 設定方法 -->
+<!-- 1. HTMLの<meta>タグに書く（本コードと同じ方法） -->
+<!-- 2. Webサーバのレスポンスヘッダーに書く（実際の開発現場で使われるのはこちらの方法） -->
+<!-- Apacheなら/var/www/html/.htaccess、Nginxなら/etc/nginx/sites-available/defaultなど。Webサーバによって設定方法は異なる。 -->
