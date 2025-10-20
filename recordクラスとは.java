@@ -4,6 +4,8 @@
 //・クラスのすべてのフィールドがprivate finalになる
 //・コンストラクタが作成される
 //・toString()などが自動作成される
+//・フィールドと同名のアクセサメソッド（getter的なもの）
+// が生成される。
 
 //このコードは
 record Rectangle(double length, double width) { }
@@ -21,14 +23,29 @@ public final class Rectangle {
     double length() { return this.length; }
     double width()  { return this.width; }
 
-    // Implementation of equals() and hashCode(), which specify
-    // that two record objects are equal if they
-    // are of the same type and contain equal field values.
     public boolean equals...
     public int hashCode...
 
-    // An implementation of toString() that returns a string
-    // representation of all the record class's fields,
-    // including their names.
     public String toString() {...}
 }
+
+// recordクラスのコンストラクタには2種類ある。
+// 1. カノニカルコンストラクタ
+// public Rectangle(double length, double width) {
+//        this.length = length;
+//        this.width = width;
+//    }
+// のように、すべてのフィールドを引数に取るコンストラクタ。
+// 自動生成されるが、自分で定義することも可能。
+
+// 2. コンパクトコンストラクタ
+// public Rectangle {
+//     if length < 0 {
+//         throw new IllegalException("lengthは0以上である必要があります。");
+//     }
+// }
+// バリデーションチェックなどを書くためのコンストラクタ。
+// 引数は書かなくてよい。
+// また、フィールドへの代入（this.〇〇 = 〇〇）はコンストラクタの最後で暗黙的に行われる。。
+// このコンストラクタの中で「this.〇〇」でフィールドにアクセスするとコンパイルエラーが発生する。
+// (代入前のfinalフィールドにアクセスしていることになるから)
