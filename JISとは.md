@@ -5,5 +5,8 @@ Japanese Industrial Standardsの略。
 ![](images/JISの分類一覧.png)
 出典: https://www.keyence.co.jp/ss/products/marker/housing-design/knowledge/iso.jsp  
 
-- JIS Q 20000-1
-サービスマネジメントの要求事項を書いたもの。
+- JIS Q 20000-1  
+サービスマネジメントの要求事項を書いたもの。  
+- JIS Q 27001  
+情報マネジメントセキュリティシステム（ISMS）の規格を定めている。  
+PDCAを回して改善していくこと、「機密性」「完全性」「可用性」をバランスよく保つことなど。  
