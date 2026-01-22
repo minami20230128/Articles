@@ -4,4 +4,4 @@
 テスト環境、検証環境、本番環境などと使い分けることができる。
 
 以下は複数の環境を作った場合の全体図。  
-![構成図](/image/ElasticBeanstalk.png)
+![構成図](/images/ElasticBeanstalk.png)

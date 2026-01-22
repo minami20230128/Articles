@@ -4,8 +4,8 @@ System Logging Protocolの略。
 Facility(ログの種類)、Severity(重要度) という概念があり、ログのフィルタリングやルーティングの際に役立つ。  
 種類は以下の通り。
 
-![facility](/image/syslog_facility.png)
-![severity](/image/syslog_severity.png)
+![facility](/images/syslog_facility.png)
+![severity](/images/syslog_severity.png)
 
 Priorityは、8 * Facility + Severityで表される。
 

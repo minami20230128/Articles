@@ -9,4 +9,4 @@ AC...コスト実績値
 
 WBSだと期日通りに進んでいるかどうかしかわからないが、EVMだとコスト関係も把握できる
 
-![EVMの例](./image/EVM.png)
+![EVMの例](./images/EVM.png)

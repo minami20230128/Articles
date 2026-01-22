@@ -20,7 +20,7 @@ NoSQLは、リレーショナルデータベースではないDBの総称なの�
 2. カラム指向  
 行で複数のキー・バリューをグループ化して保持する。
 例: Cassandra、HBase
-![](image/NoSQL_カラム型.png)
+![](images/NoSQL_カラム型.png)
 出典: https://qiita.com/shuyann/items/ca3e62cb417c0e214613
 
 1. ドキュメント指向

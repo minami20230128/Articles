@@ -10,4 +10,4 @@ Controller...Modelの処理結果を元にViewを操作
 3. Modelが入力された情報をDBと称号し、認証結果を返す
 4. ControllerがModelの返した結果を受け取り、それに応じた画面を表示するようにViewに命令
 
-![](image/MVC.png)
+![](images/MVC.png)

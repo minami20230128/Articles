@@ -8,7 +8,7 @@ HTTPメソッドで送受信を行う、JSONを使用するなど
 
 2. アドレス可能性  
 すべての情報が一意なURI（識別子）を持っていること。
-![RESTAPIのURIの例](/image/RESTAPIのURIの例.png)
+![RESTAPIのURIの例](/images/RESTAPIのURIの例.png)
 
 3. 接続性  
 やりとりする情報にハイパーリンクを含められること。
