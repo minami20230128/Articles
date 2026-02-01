@@ -5,6 +5,9 @@
   ![CPUスロットリング](/images/CPUスロットリング.png)
   それ以外の倍率を設定したい場合はProtocol Monitorから設定できる。手順は以下を参照。  
   https://zenn.dev/from_host/articles/2d91bf31807b57  
+  設定後の秒数はInteractionsタブから見られる。  
+  ![CPUスロットリング](/images/CPUスロットリング_6倍.png)
+  ![CPUスロットリング](/images/CPUスロットリング_等倍.png)
 
 - ネットワークスロットリング  
   API通信など、通信を伴う動作のパフォーマンスを確かめたいときに使う。
