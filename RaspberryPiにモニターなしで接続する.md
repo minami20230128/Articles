@@ -3,6 +3,10 @@
 Raspberry Piのセットアップを行う際、マニュアルにはMicroSDの書き込み後、HDMIケーブルでモニターと接続し、GUIで設定を行うように説明があった。  
 しかし、手元にモニターがなく、PCだけで設定したかったため。
 
+## 前提
+Raspberry PiをPCと同じWi-Fiに接続すること。  
+Raspberry Pi ImagerでmicroSDのセットアップを行うときに設定可能。
+
 ## 手順
 1. TeraTermをインストールする。
 2. TeraTermを開き、ホスト名に「[MicroSD書き込み時に設定したホスト名].local」と入力する。
