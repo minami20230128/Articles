@@ -26,3 +26,5 @@ http://127.0.0.1:8080/
 ![](images/BurpSuiteプロキシ方法2.png)  
 4. Burpの証明書をChromeに設定する  
 http://127.0.0.1:8080/ の右上に「CA Certificate」というボタンがあるので、そこからダウンロードする。  
+以下のサイトに沿ってChromeにBurpの証明書をインストール。  
+https://burp-resources-ja.webappsec.jp/Documentation/burp/documentation/desktop/external-browser-config/certificate/ca-cert-chrome-macos.html
