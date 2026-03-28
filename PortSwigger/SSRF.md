@@ -1,5 +1,7 @@
 # Server-side request forgery
-## 概要
+## 概要  
+リクエストを傍受し、別サーバへのURLを管理者画面などに置き換えて攻撃すること。  
+
 以下のように、HTTPリクエストの中で別のAPIを叩いているところが危ない。
 ```
 POST /product/stock HTTP/1.0
