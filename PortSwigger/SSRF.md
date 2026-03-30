@@ -19,7 +19,9 @@ Content-Length: 118
 
 stockApi=http://localhost/admin
 ```
+同じサーバに攻撃したいページがある場合はlocalhost、別サーバにある場合はIPアドレスを変えながら攻撃してどこにあるか探る。
 
+## 詰まったところ・疑問点など
 - リクエスト内容の解説  
 stockApiというボディパラメータとして、別APIのURLを/product/stockに渡している。  
 以下のように、/product/stockの中で別APIが呼ばれる想定。  
@@ -31,3 +33,6 @@ def check_stock(request):
     response = http_get(url)
     return response.text
 ```
+
+- Burp Intruderの結果  
+本体とは別タブに出ているので注意！！
