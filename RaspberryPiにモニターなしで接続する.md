@@ -9,7 +9,7 @@ Raspberry Pi ImagerでmicroSDのセットアップを行うときに設定可能
 
 ## 試したこと
 テレビにつないだ⭢だめだった笑  
-Wi-Fiの管理画面からRaspberry PiのIPアドレスを特定⭢管理画面の開き方がわからず
+自宅のWi-Fiルータの管理画面からRaspberry PiのIPアドレスを特定⭢説明書を読んだが管理画面の開き方がわからず
 
 ## 手順
 1. TeraTermをインストールする。
