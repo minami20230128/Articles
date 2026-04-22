@@ -10,9 +10,20 @@ JavaScriptではnavigator.userAgentで取得可能。
 ```
 Mozilla/5.0 (...) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36
 ```
+これは、かつてWebサイトやアプリケーションの実装に以下のようなコードが含まれていることが多かったため。  
+```
+if (ua.includes("Mozilla")) { ... }
+if (ua.includes("Safari")) { ... }
+if (ua.includes("Chrome")) { ... }
+```
+このような実装があると、新しいブラウザを開発してもサイト側の判定に引っかからず、表示されるはずのものが表示されなかったりする。  
+それを防ぐために、複数のブラウザの名前を名乗っている。
 
 2. User-Agent Client Hints  
-JavaScriptではnavigator.userAgentData.brandsで取得可能。
+User-Agent文字列に代わる新しい仕組み。  
+User-Agent文字列は、サイトやアプリケーション側がブラウザ名やバージョンによって細かく分岐していることを前提に肥大化してしまった。  
+そのため、User-Agent Client Hintsはそれを防ぐように作られている。  
+JavaScriptではnavigator.userAgentData.brandsで取得可能。  
 これを実行するとブラウザ名が取得できるが、**順不同かつそれ以外の要素も混ざってくる。**
 ````
 [
@@ -30,7 +41,7 @@ JavaScriptではnavigator.userAgentData.brandsで取得可能。
     }
 ]
 ````
-ダミーが混ざるのはUA Client HintsのGREASEという仕組み。  
+ダミーが混ざるのはUA Client HintsのGREASEという仕組みのよるもの。  
 Webサイト、アプリケーションなどにおいて、順序に依存した実装がなされることを防ぎたいから。  
 ```
 const brand = navigator.userAgentData.brands[0].brand;
@@ -38,3 +49,5 @@ if (brand === "Google Chrome") {
 
 }
 ```
+また、最初からブラウザのバージョンの小数点以下の部分は明かさないようになっている。  
+これもサイト側にバージョンをハードコードして分岐されるのを防ぐため。
