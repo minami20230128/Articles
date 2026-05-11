@@ -15,10 +15,17 @@ pgbench simple-update（pgbenchと呼ばれるPostgreSQLにベンチマーク試
 pgbenchについて：  
 https://www.postgresql.jp/docs/9.6/pgbench.html
 
+- プリエンプションとは？  
+実行状態のタスクをいったん停止して実行可能状態に戻すこと。
+
 - そもそもなぜLinuxの変更がPostgreSQLの速度に影響すると言われているのか？  
 PostgreSQLをLinuxサーバ上で実行することが多いから。
 
-- 今回Linuxに入った変更内容
+- 今回Linuxに入った変更内容  
+利用可能なプリエンプションモードの削減。  
+もともとPREEMPT_NONE、PREEMPT_VOLUNTARY、PREEMPT_FULL。PREEMPT_LAZYの4種類が使用可能だった。  
+しかし、変更後は実質PREEMPT_LAZYとFULLしか使用できなくなった。  
+PostgreSQLは、PREEMPT_NONEのようにカーネル側でほぼプリエンプションが行われない前提で作られているため、今回の変更によってパフォーマンスが低下してしまった。
 
 - ユーザ空間スピンロックとは？  
 あるリソースがスレッドによってロックされているとき、別スレッドがCPU側ではなくアプリ側で取得できるかどうか短い期間確認し続けながら待機すること。  
