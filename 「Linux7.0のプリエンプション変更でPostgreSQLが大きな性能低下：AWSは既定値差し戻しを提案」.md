@@ -24,6 +24,9 @@ PostgreSQLをLinuxサーバ上で実行することが多いから。
 - 今回Linuxに入った変更内容  
 利用可能なプリエンプションモードの削減。  
 もともとPREEMPT_NONE、PREEMPT_VOLUNTARY、PREEMPT_FULL。PREEMPT_LAZYの4種類が使用可能だった。  
+PREEMPT_NONE...処理終了までほぼプリエンプションを行わない   
+PREEMPT_VOLUNTARY...プリエンプションするとき、プロセスが自発的に処理を中断するまで待つ  
+PREEMPT_FULL...カーネルがほぼいつでもプロセス中断可能  
 しかし、変更後は実質PREEMPT_LAZYとFULLしか使用できなくなった。  
 PostgreSQLは、PREEMPT_NONEのようにカーネル側でほぼプリエンプションが行われない前提で作られているため、今回の変更によってパフォーマンスが低下してしまった。
 
