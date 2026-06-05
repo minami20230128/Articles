@@ -34,5 +34,14 @@ def check_stock(request):
     return response.text
 ```
 
-- Burp Intruderの結果  
-本体とは別タブに出ているので注意！！
+- Burpで管理者画面のIPアドレスを探る方法
+1. リクエスト内で別APIを叩いている箇所を探す
+2. Burp Proxyでリクエストを傍受する
+3. 該当リクエストを右クリックし「Send to Intruder」を選択
+4. IntruderタブでAPIを叩いている箇所（今回で言えばstockApiパラメータ）のIPアドレスをハイライトし、「Add §」ボタンをクリック
+5. Payloadタブで「Payload type」に「numbers」を選択。「Number Range」の「From」に1、「To」に255を入力
+6. 「Start Attack」をクリック。
+Intruderの結果は本体とは別タブに出るので注意！！
+7. Status Code=200のレスポンスがあれば、それが攻撃対象のIPアドレス。  
+右クリックし「Send to Repeater」を選択  
+8. リクエスト内で別APIを叩いている箇所のパスを「/admin/delete?username=carlos」のように書き換え、リクエスト送信して攻撃
