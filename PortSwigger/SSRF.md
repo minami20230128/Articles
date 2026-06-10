@@ -34,7 +34,7 @@ def check_stock(request):
     return response.text
 ```
 
-- Burpで管理者画面のIPアドレスを探る方法
+- Burpで管理者画面のIPアドレスを探り、攻撃する方法
 1. リクエスト内で別APIを叩いている箇所を探す
 2. Burp Proxyでリクエストを傍受する
 3. 該当リクエストを右クリックし「Send to Intruder」を選択
