@@ -7,7 +7,7 @@
 EOLの場合、新しい脆弱性が見つかっても対応されないので、各種ライブラリを古いまま使用することになる。
 ### フロントエンド
 自動エスケープのライブラリが古くXSS攻撃をされるなど。  
-Vue2の場合、EOL後にCVE-2024-6783（XSS）、CVE-2024-9506（ReDoS）という2つの脆弱性が見つかった。
+Vue2の場合、EOL後に[CVE-2024-6783（XSS）](https://www.cve.org/CVERecord?id=CVE-2024-6783)、[CVE-2024-9506（ReDoS）](https://www.herodevs.com/vulnerability-directory/cve-2024-9506?nes-for-vue-2)という2つの脆弱性が見つかった。
 EOLのため無償版では対応はなされず。
 ### バックエンド
 認証・認可、SQL、ファイル処理、シリアライズ、テンプレート処理、HTTPパースなどを行うライブラリが古くなると、
